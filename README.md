@@ -1,5 +1,35 @@
 # gryphter (name TBC)
-Yet another graphql server framework
+
+Server-side GraphQL for humans.
+
+## Motivation
+
+I've used quite[graphene] a[tartiflette] few[strawberry] different Python GraphQL server libraries in my time.
+Trivial Star Wars examples are all well and good, but when push comes to shove and I have to monitor a system under load, 
+whilst implementing the 23rd inter-related resolver, they all seemed to be ... lacking
+
+This project is a proof-of-concept to materialise some ideas that are bubblign around in my head. The hypothesis is
+that it's possible to build a graphql server implementation in a way that is significnatly more intuitive 
+for a native Python developer (or, at least, intuitive for me ;-), adn that this will allow the use of features
+for rapidly developing and running relibaly production systems.
+
+
+## Goal
+Create a distinctive GraphQL server library, written in and for idiomatic Python,
+with an emphasis on the experience of the backend developer and SRE.
+
+
+## Inspirations & Thanks
+
+* Kenneth Reitz, for showing us how to build simple-but-sophisticated tools that developers actually love
+* FastAPI and tiangolo, who paved the way for thinking about low-effort API implementations
+* tartiflette, for showing that you can implement a python server without graphql-core
+* strawberry
+
+## Principles
+
+
+
 
 ## Unstructured notes
 written in and for idomaitc python
