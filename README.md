@@ -21,14 +21,16 @@ with an emphasis on the experience of the backend developer and SRE.
 
 ## Inspirations & Thanks
 
-* Kenneth Reitz, for showing us how to build simple-but-sophisticated tools that developers actually love
-* FastAPI and tiangolo, who paved the way for thinking about low-effort API implementations
+* Guido van Rossum, and the core python team - of course.
+* Kenneth Reitz, for showing us how to build simple-but-sophisticated tools that developers actually love.
+* FastAPI and tiangolo, who opened the door to thinking about low-effort API implementations.
 * tartiflette, for showing that you can implement a python server without graphql-core
 * strawberry
 
 ## Principles
 
 
+## Motivating Example
 
 
 ## Unstructured notes
@@ -74,3 +76,16 @@ What's in a response class
 * fields with deferred execution (eg. takes non-trivial CPU time, or complex lookup from other fields)
 * unique name
 * server-side config for how to handle errors from child resolvers.
+
+intended for building  general-purpose API's, not BFF or other server-side rendered paradigms
+
+don't do unhelpful things by default.
+	prod-ready by default, and make it easy to find out and do anything you might want in devel (what even is in this category?)
+	don't even offer things that are stupid (like bundling graphiql, or handling GET)
+
+batteries included
+	error reporting, name your technique
+
+dependencies
+	- we do want sophisticated depdnecy injection, fasatapi style
+	- do we want ot be couple to fastapi dependencies (neat for shared REST + GQL implementations, annoyign for everyone else) -> nah
