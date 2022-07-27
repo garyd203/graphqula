@@ -114,4 +114,6 @@ async def get_value_for_resolver_function(field, coro):
         # TODO else re-raise
         raise
 
+    # TODO note that the coro returns a value that needs to become a pydnatic object, rather than something that already is a pydantic object.
+
     # TODO resolver funcitons don't ge tpydantics strict value checking, so we need tocheck for NOne where not allowed, and cascade up (raise an exception?)
