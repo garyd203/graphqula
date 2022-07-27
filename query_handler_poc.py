@@ -11,6 +11,7 @@ async def handle_graphql_post():
 
     # Get an object hierarchy modelling the actual queried fields and the input variables for each field
     # mayeb use graphql-core implementation if it is decent
+    # Wrap in our opwn classes regardless of how it is derived
     # this embeds the final vars in the hierarchy. that would be most useful, let's assume so...
     query_sturcture = await get_queried_field_hierarchy(query_string)
 
@@ -27,15 +28,31 @@ async def get_schema_fields(query, model: BaseModel) -> dict[str, Any]:
 
     # Important design criteria here: this is the visitor pattern, so  the tree walking logic is entirely contained in this code, and is not visible to the schema models (don't pollute models) or the query sturcture
 
-    # NB: here we have query and schema, but not response object. so get a response
+    # Assumption is that the query structure is valid for the schema, and that the schema is valid for the model hierarchy. This is fair, given they're deterministically derived from each other.
 
-    # NB: in future Want to cahce identical response objects and re-export them. not sure this really makes sense though
+    ### --- refactor --- ###
+
+    # Collect all simple fields in a group using pydantic functionality
+    all_field_names = {field.name for field in query}
+
+    simple_field_names = all_field_names & model.__fields__.keys()
+
+    # TODO export to final format, not native type?
+    #   should we do JSON export, and deal with it by custom JSON exporters?
+    #   need to not export model instances - maybe modify the json-exporter mapping
+    simple_fields = model.dict(include=simple_field_names)
+
+
+    # Collect all deferred fields separately
+    #FIXME
+    deferred_field_names = all_field_names - simple_field_names
+
+    ### --- ###
 
     result = {}
     async_fields = {}
 
-    # TODO want to wrap this loop up in a pooled await to minimise wlal-clock time
-    # TODO sensible exception handling and None-insertion
+    # NB: note that there are 2 levels of resolution for a field. first is to get the response value for that field. second is to recurse into that if it is a pydantic object
 
     for field in query:
         # TODO do we wanna use the pydantic export stuff? Not sure it makes sense, makes it a bit more inconsistent with the experience for function resolvers

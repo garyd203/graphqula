@@ -87,5 +87,7 @@ batteries included
 	error reporting, name your technique
 
 dependencies
-	- we do want sophisticated depdnecy injection, fasatapi style
-	- do we want ot be couple to fastapi dependencies (neat for shared REST + GQL implementations, annoyign for everyone else) -> nah
+	- we do want sophisticated dependency injection, fasatapi style
+	- do we want ot be coupled to fastapi dependencies (neat for shared REST + GQL implementations, annoyign for everyone else) -> nah
+
+dont make type mappings global. do per-field using shared functions

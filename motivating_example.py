@@ -4,14 +4,20 @@ from pydantic import BaseModel
 class Hero(BaseModel):
     """This docstring becomes the documentation in GQL Schema."""
 
+    # TODO need terminology to distinguish between simple fields and function-resolver-bsed fields (even sync vs async)
+    #   simple and deferred
+
     # TODO do we want a compulsory `id` field? Or jsut use hashing (implementers need to make your hashing correct!)
 
     # A field known at time of instnaitating this object, possibly with straightforward transofrmation fromthe source field
     # TODO calrify whether this *must* be a scalar, or can be anything. no reason it can't be anything
     #: Shebang-based docstring becomes the documentation in GQL Schema
-    name: str  # TODO non-empty; other config
+    name: str  # TODO example usage of non-empty; other config
 
-    # TODO need an example of a hidden (non-response) field. What doe spydantic offer us
+    # TODO need an example of a hidden (non-response) field.
+    #   What does pydantic offer us -> https://pydantic-docs.helpmanual.io/usage/models/#private-model-attributes
+
+    # TODO need an example of a simple field that returns a BaseModel, which itself contasin function resolvers
 
     # TODO do we need a decorator here?
     # TODO do we want dependency injection here (arbitrary dependencies, not the crappy graphql-core ones)
@@ -31,7 +37,12 @@ class Hero(BaseModel):
         return []
 
     # TODO example of using pydantic Config class
+    #   eg. specify extra resolver beahviour. Does this belong in a separate Config class? or a subclass under COnfig
 
+
+# TODO example of an input type - probably a bit different?
+
+# TODO provide base classes with soem common config set?
 
 class Query(BaseModel):
     # NB: Query is a baseModel, but has a specila meaning. hence it needs ot be able t be instantiated with no arguments. In general we'd expect there to only be resolver fucntions, and no pydantic fields
