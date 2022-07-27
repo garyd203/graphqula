@@ -15,15 +15,15 @@ async def handle_graphql_post():
     query_sturcture = await get_queried_field_hierarchy(query_string)
 
     # construct a response dictionary based on walking the query structure recursively
+    root_model = schema_from_some_fastapi_dependency.Query()
     response: dict = await get_schema_fields(
-        query_sturcture, schema_from_some_fastapi_dependency
+        query_sturcture, root_model
     )
 
     return response
 
 
-async def get_schema_fields(query, model: type[BaseModel]) -> dict[str, Any]:
-    # TODO not sure this is any different from get_response
+async def get_schema_fields(query, model: BaseModel) -> dict[str, Any]:
 
     # Important design criteria here: this is the visitor pattern, so  the tree walking logic is entirely contained in this code, and is not visible to the schema models (don't pollute models) or the query sturcture
 
@@ -63,6 +63,20 @@ async def get_schema_fields(query, model: type[BaseModel]) -> dict[str, Any]:
             #       what if other exceptions *would* occur except execution got short-circuited?
             #       -> does it really matter?? What are we expecting the client to do if there are multiple reasons why an object couldnt be resolved? Mebbe more info is nice, coudl do in future but meh
             result[fieldname] = await task  # raises exception, or returns valid value
+
+    # TODO iterate through fields and recurse if any of them are non-scalras
+    #   not sure we want ot recurse here though
+    #       how does that work with cascading exceptions?
+    #       how about improving our ability to multi-task by not blocking at this levle
+    #       we must recurse here if we allow non-function fiuelds to return a model instance
+    #           although we could recurse here as a fallback tier... but that's just anonying duplication and complexity
+    for field in query:
+        # recurse if:
+        #   result is a model instance
+        #   query suggests we need child fields
+        #   NB: either piece of logic appears ot be adequate on its own
+        if item_should_be_recursed(field):
+            result[field.name] = await get_schema_fields(field, result[field.name])
 
     return result
 
