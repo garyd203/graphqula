@@ -50,11 +50,17 @@ async def get_schema_fields(query, model: BaseModel) -> dict[str, Any]:
                 field, model_field
             )
         else:
+            # TODO I think we need to deal with the difference between how the field is represented on the model (perhaps native type like datetime), and how it gets exported. pydanitc may have the answers here, but woudl need to do the export thing.
+            #   -> i think it makes sense to do a bulk export of pydantic fields here
             result[field.name] = model_field
 
     # TODO try anyio
     if async_fields:
+        # TODO do we wait for all to complete, or wait for firat failure
+        #   first failure makes sense, but that has implications for error reporting
+        #   we would also need to cancel all the remaining tasks.
         await batch_await(async_fields.values())
+
         for fieldname, task in async_fields.items():
             # TODO check for NOne where not allowed, and cascade up
             # TODO do we handle exceptions here? I think not, get_value_for_resolver_function does that. an exception here means that tihs entire object gets invalidated
@@ -70,6 +76,7 @@ async def get_schema_fields(query, model: BaseModel) -> dict[str, Any]:
     #       how about improving our ability to multi-task by not blocking at this levle
     #       we must recurse here if we allow non-function fiuelds to return a model instance
     #           although we could recurse here as a fallback tier... but that's just anonying duplication and complexity
+    # TODO the whole structure is a bit flawed because we are buklding up the result dictionary, but adding thigns to it that are not the correct type.
     for field in query:
         # recurse if:
         #   result is a model instance

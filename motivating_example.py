@@ -20,6 +20,8 @@ class Hero(BaseModel):
 
         # Note that return type is non-compulsory, and is not the same as the response type
 
+        # Note that function resovlers are a fundamentally different and independent way of getting a field, compared to apydantic object.
+
         # Note that this is a normal pydanitc model, so `self` genuinely is an instance of this class. MOreover, it corresponds to *the*
         # response object, not  acopy or source for the repsonse object. (response object is transforemed into JSON to go over the wire, but otheriwsie is this object)
 
