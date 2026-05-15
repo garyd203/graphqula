@@ -24,7 +24,7 @@ class Hero(BaseModel):
     async def friends(self):
         # A field not known at instantiation time, that has non-trivial implementaiton (eg. dataabse access, compelxx data combination) and/or accepts GQL parameters
 
-        # Note that return type is non-compulsory, and is not the same as the response type
+        # Note that return type (Python annotation) is non-compulsory, and is not the same as the response type
 
         # Note that function resovlers are a fundamentally different and independent way of getting a field, compared to apydantic object.
 
