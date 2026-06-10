@@ -1,6 +1,9 @@
-# gryphter (name TBC)
+# PurQL
 
-Server-side GraphQL for Pythonistas.
+Server-side GraphQL, purely Pythonic.
+
+Pronounced like "purl" or "pearl".
+
 
 ## Motivation
 

@@ -1,6 +1,6 @@
-# gryphter
+# PurQL
 
-Server-side GraphQL for Pythonistas.
+Server-side GraphQL, purely Pythonic.
 
 ## Purpose
 
@@ -35,7 +35,7 @@ Key concepts:
 - **Dependency injection** — FastAPI-style, but NOT coupled to FastAPI's dependency system.
 
 
-<!-- FILL IN: target package layout once you commit to one, e.g. src/gryphter/... -->
+<!-- FILL IN: target package layout once you commit to one, e.g. src/purql/... -->
 
 
 ## Tooling
