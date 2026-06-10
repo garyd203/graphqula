@@ -7,10 +7,10 @@ license = "LGPL"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-pydantic = "^1.9.1"
+pydantic = "^2"
 
 [tool.poetry.group.dev-tools.dependencies]
-black = "=22.6.0"
+black = "=26.5.1"
 
 [build-system]
 requires = ["poetry-core>=2.4.0"]
