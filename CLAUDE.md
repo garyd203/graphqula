@@ -8,6 +8,13 @@ A GraphQL server library written in and for idiomatic Python, prioritising the e
 the backend developer, along with observability.
 
 
+## Be Pythonic
+
+This means:
+
+* Lean on exceptions for control flow, and also for passing rich errors.
+* Use opt-in Dependency Injection instead of passing around a context object.
+
 ## Design principles
 
 These are load-bearing — they should win arguments about how to implement things.
