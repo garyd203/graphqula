@@ -44,6 +44,7 @@ class Hero(BaseModel):
 
 # TODO provide base classes with soem common config set?
 
+
 class Query(BaseModel):
     # NB: Query is a baseModel, but has a specila meaning. hence it needs ot be able t be instantiated with no arguments. In general we'd expect there to only be resolver fucntions, and no pydantic fields
     pass  # FIXME `hero` with diff parametrs.

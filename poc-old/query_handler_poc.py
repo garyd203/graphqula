@@ -17,9 +17,7 @@ async def handle_graphql_post():
 
     # construct a response dictionary based on walking the query structure recursively
     root_model = schema_from_some_fastapi_dependency.Query()
-    response: dict = await get_schema_fields(
-        query_sturcture, root_model
-    )
+    response: dict = await get_schema_fields(query_sturcture, root_model)
 
     return response
 
@@ -42,9 +40,8 @@ async def get_schema_fields(query, model: BaseModel) -> dict[str, Any]:
     #   need to not export model instances - maybe modify the json-exporter mapping
     simple_fields = model.dict(include=simple_field_names)
 
-
     # Collect all deferred fields separately
-    #FIXME
+    # FIXME
     deferred_field_names = all_field_names - simple_field_names
 
     ### --- ###
