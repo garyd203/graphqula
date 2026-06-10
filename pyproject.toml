@@ -11,6 +11,7 @@ pydantic = "^2"
 
 [tool.poetry.group.dev-tools.dependencies]
 black = "=26.5.1"
+ruff = "^0.15"
 
 [build-system]
 requires = ["poetry-core>=2.4.0"]
