@@ -46,7 +46,7 @@ no-surprise
 low-boilerplate
 
 focus on (server) developer experience as first priority. if we get tha right, everythign else will follow. If we don't get that right, there's no point doing this - there's plenty of toher frameworks already.
-	- not that thigns like performance, reliability are unimportant - just not the first priority
+	- not that thigns like performance, reliability are important - just not the first priority
 
 view the queried object graph as a hierarchy when executed. propagate state down the hierarchy, propagate problems back up the hierarchy
 
