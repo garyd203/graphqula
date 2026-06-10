@@ -1,9 +1,9 @@
 [tool.poetry]
-name = "gryphter"  #FIXME
+name = "gryphter"
 version = "0.1.0"
-description = "blah" #FIXME
+description = "Server-side GraphQL for Pythonistas"
 authors = ["garyd <github@gazza.id.au>"]
-license = "ALGPL" #FIXME
+license = "LGPL"
 
 [tool.poetry.dependencies]
 python = "^3.10"

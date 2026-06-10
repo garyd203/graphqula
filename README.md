@@ -1,6 +1,6 @@
 # gryphter (name TBC)
 
-Server-side GraphQL for humans.
+Server-side GraphQL for Pythonistas.
 
 ## Motivation
 
