@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "purql"
+name = "graphqula"
 version = "0.1.0"
 description = "Server-side GraphQL, purely Pythonic."
 authors = ["garyd <github@gazza.id.au>"]

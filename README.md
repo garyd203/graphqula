@@ -1,8 +1,6 @@
-# PurQL
+# graphqula
 
 Server-side GraphQL, purely Pythonic.
-
-Pronounced like "purl" or "pearl".
 
 
 ## Motivation
