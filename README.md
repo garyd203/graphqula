@@ -11,8 +11,8 @@ I've used quite[graphene] a[tartiflette] few[strawberry] different Python GraphQ
 Trivial Star Wars examples are all well and good, but when push comes to shove and I have to monitor a system under load, 
 whilst implementing the 23rd inter-related resolver, they all seemed to be ... lacking
 
-This project is a proof-of-concept to materialise some ideas that are bubblign around in my head. The hypothesis is
-that it's possible to build a graphql server implementation in a way that is significnatly more intuitive 
+This project is a proof-of-concept to materialise some ideas that are bubbling around in my head. The hypothesis is
+that it's possible to build a graphql server implementation in a way that is significantly more intuitive 
 for a native Python developer (or, at least, intuitive for me ;-), adn that this will allow the use of features
 for rapidly developing and running relibaly production systems.
 
