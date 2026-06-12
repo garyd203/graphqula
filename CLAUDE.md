@@ -1,4 +1,4 @@
-# PurQL
+# graphqula
 
 Server-side GraphQL, purely Pythonic.
 
@@ -44,7 +44,7 @@ Key concepts:
 - **Dependency injection** — FastAPI-style, but NOT coupled to FastAPI's dependency system.
 
 
-<!-- FILL IN: target package layout once you commit to one, e.g. src/purql/... -->
+<!-- FILL IN: target package layout once you commit to one, e.g. src/graphqula/... -->
 
 
 ## Tooling
