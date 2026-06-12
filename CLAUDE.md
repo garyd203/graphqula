@@ -21,11 +21,13 @@ These are load-bearing — they should win arguments about how to implement thin
 
 - **Developer experience first.** If the server-dev DX isn't excellent, there's no reason for this library to exist over strawberry/tartiflette/graphene. Performance and reliability matter but are not the *first* priority.
 - **No surprises.** A dev moderately experienced in both GraphQL and Python should be able to do most things without reading much documentation, and never hit surprising behaviour.
-- **Low boilerplate.** Lean on Pydantic and FastAPI-style ergonomics.
+- **Low boilerplate.** Lean on existing Pydantic functionality, and FastAPI-style ergonomics.
 - **Production-ready by default.** Don't do unhelpful things by default; don't even offer footguns (no bundled GraphiQL, no GET handling).
 - **Visitor pattern, not a 2-in-1 hierarchy.** Schema/response models are a standalone class hierarchy. The tree-walking logic that turns them into a JSON response lives separately and must not pollute the models.
 - **Async-only resolvers.** Sync resolution is intentionally unsupported (threadpool + context propagation is a mess).
 - **Don't reinvent wheels** for non-core concerns (caching, dataloader, DI mechanics) when a good option exists.
+- **Use only one constrained class library**, which is `pydantic` (not `dataclasses`)
+- **Immutable objects** are easier to work with, and should be preferred - especially for long-lived objects.
 
 
 ## Glossary
