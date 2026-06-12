@@ -1,6 +1,6 @@
 import pytest
 
-from purql import Schema, SchemaFrozenError
+from graphqula import Schema, SchemaFrozenError
 
 
 def test_register_query_direct_call_should_register_function():
