@@ -94,3 +94,11 @@ dependencies
 	- do we want ot be coupled to fastapi dependencies (neat for shared REST + GQL implementations, annoyign for everyone else) -> nah
 
 dont make type mappings global. do per-field using shared functions
+
+need to think through how we handle intermediate exceptiojns?
+- Do they jsut propagate up unless explciitly handled
+- can we add errors to the GQL response error list _without_ throwing an exception
+- how do we propagate the error data for multiple errors? can't throw an exception, don;t want ot pass up ridiculous structured response all the time?
+  -> maybe have a DI-dependency that you can opt in to receiveing, that you use to add error details when resolving the current object
+
+root fields are sepcial and need to alway be a deferred funciton (no simple fields)
