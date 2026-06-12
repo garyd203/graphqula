@@ -26,7 +26,7 @@ with an emphasis on the experience of the backend developer and SRE.
 * Kenneth Reitz, for showing us how to build simple-but-sophisticated tools that developers actually love.
 * FastAPI and tiangolo, who opened the door to thinking about low-effort API implementations.
 * tartiflette, for showing that you can implement a python server without graphql-core
-* strawberry
+* strawberry, for being just good enough that we could use it for years, but still infuriating enough that I wanted to do this project.
 
 ## Principles
 
