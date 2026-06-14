@@ -6,7 +6,7 @@ import inspect
 import logging
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
-from typing import Any, TypeVar
+from typing import Any
 
 LOGGER = logging.getLogger(__name__)
 
@@ -98,11 +98,9 @@ class Schema:
         May be called directly or used as a decorator.
 
         By convention, fields that modify data are registered as mutations rather than queries
-        (similar to the distinction between GET and POST/PATCH in RESTful API's).
-
-        More strictly, a single graphQL request that requests multiple top-level mutation fields
-        will process the request for each field sequentially, whereas query fields are processed
-        in parallel.
+        (similar to the distinction between GET and POST/PATCH in RESTful API's). Stated
+        more precisely, a single GraphQL request that requests multiple top-level mutation fields
+        will process each field sequentially, whereas query fields are processed in parallel.
         """
         if func is None:
             # Decorator was called first before decorating the target
@@ -136,7 +134,7 @@ class Schema:
         *,
         variables: dict[str, Any] | None = None,
         operation_name: str | None = None,
-            # TODO I think we may nee dmore params here?
+        # TODO I think we may nee dmore params here?
     ) -> ExecutionResult:
         """Execute a GraphQL operation against this schema.
 
