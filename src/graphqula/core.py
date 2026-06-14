@@ -5,26 +5,15 @@ from __future__ import annotations
 import inspect
 import logging
 from collections.abc import Awaitable, Callable
-from dataclasses import dataclass
 from typing import Any
+
+from .error_handler import FailFastErrorHandler, BaseErrorHandler
 
 LOGGER = logging.getLogger(__name__)
 
+
 #: Type for an async function that calculates the value for a deferred field
 DeferredField = Callable[..., Awaitable[Any]]
-
-
-@dataclass(slots=True)
-class ExecutionError:
-    # TODO rename to not look like an exception class.
-    # TODO doesn't this ened line number and whatnot? if you're gonne do somethign, do it properly
-    message: str
-
-
-@dataclass(slots=True)
-class ExecutionResult:
-    data: dict[str, Any] | None = None
-    errors: list[ExecutionError] | None = None
 
 
 class SchemaFrozenError(Exception):
@@ -132,24 +121,39 @@ class Schema:
         self,
         document: str,
         *,
-        variables: dict[str, Any] | None = None,
+        # TODO we will eventually need more parameters here
+        error_handler: BaseErrorHandler | None = None,
         operation_name: str | None = None,
-        # TODO I think we may nee dmore params here?
-    ) -> ExecutionResult:
-        """Execute a GraphQL operation against this schema.
+        variables: dict[str, Any] | None = None,
+    ) -> dict[str, Any] | None:
+        """Execute a GraphQL operation against this schema, returning just the result data.
+
+        Any errors during field evaluation will be reported to `error_handler`.
+        The caller should extract them from there for returning to the GraphQL client,
+        if necessary.
 
         This will implicitly freeze the schema if it's not frozen yet.
+
+        Raises:
+            Any unhandled errors during field evaluation.
         """
         if not self.is_frozen:
             self.freeze()
 
         if not self._root_queries:
             raise ValueError("A schema must define at least one query field.")
-        # TODO tweak response type. want ot just return the data, but also need a way to sideload the known exceptions.
+
+        if error_handler is None:
+            # TODO log choice of default, perhaps
+            error_handler = FailFastErrorHandler()
+        # TODO log what the error handler is, perhaps
+        error_handler.bind_to_request()
+
         # TODO note that unhandled exceptions may be propagated too. Or should we catch them all here?
-        # TODO build the engine. Unhandled resolver exceptions vs. known errors
-        #   sideloaded onto ExecutionResult still needs designing.
-        return ExecutionResult(data=None, errors=None)
+        # TODO build the engine. Resolver errors get wrapped into FieldError (with
+        #   path, once tracking lands) and handed to collector.collect(); parse and
+        #   validation errors raise unconditionally, before the collector is consulted.
+        return None
 
     def _register_root_field(
         self, field_registry: dict[str, DeferredField], func: DeferredField
