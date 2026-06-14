@@ -11,8 +11,8 @@ whilst implementing the 23rd inter-related resolver, they all seemed to be ... l
 
 This project is a proof-of-concept to materialise some ideas that are bubbling around in my head. The hypothesis is
 that it's possible to build a graphql server implementation in a way that is significantly more intuitive 
-for a native Python developer (or, at least, intuitive for me ;-), adn that this will allow the use of features
-for rapidly developing and running relibaly production systems.
+for a native Python developer (or, at least, intuitive for me ;-), and that this will allow the use of features
+for rapidly developing and running reliable production systems.
 
 
 ## Goal
@@ -51,6 +51,7 @@ view the queried object graph as a hierarchy when executed. propagate state down
 logging:
 	- set and propagate log context (and other context) into all resolvers
 	- propagate context from parent resolver -> npt sure this makes sense
+	- actually make logging work sensibly
 
 execptions
 	- use exceptions
