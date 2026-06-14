@@ -242,7 +242,7 @@ def test_include_schema_should_reject_name_collisions():
     root_schema = Schema()
 
     @root_schema.register_query()
-    async def hero():
+    async def hero():  # noqa: F811 — function is intentionally identically-named to the function above
         return "C3P0"
 
     # Exercise / Verify
