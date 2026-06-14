@@ -1,1 +1,5 @@
+# IDE cruft
 .idea/
+
+# Build artefacts
+dist/
