@@ -1,6 +1,6 @@
 import logging
 
-from graphqula import ErrorTracker, FieldErrorData
+from graphqula.error_handler import ErrorTracker, FieldErrorData
 
 
 def test_report_error_should_record_message_and_return_data():
