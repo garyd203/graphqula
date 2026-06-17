@@ -1,8 +1,15 @@
-from .core import ExecutionError, ExecutionResult, Schema, SchemaFrozenError
+# Dedicated re-exports for the public parts of the graphqula interface
+
+from .core import (
+    Schema,
+)
+from .error_handler import (
+    ErrorHandler,
+)
+from .exceptions import CancelledExecutionError
 
 __all__ = [
-    "ExecutionError",
-    "ExecutionResult",
+    "CancelledExecutionError",
+    "ErrorHandler",
     "Schema",
-    "SchemaFrozenError",
 ]
