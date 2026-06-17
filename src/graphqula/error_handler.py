@@ -7,6 +7,8 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import Sequence
 
+from .exceptions import CancelledExecutionError
+
 LOGGER = logging.getLogger(__name__)
 
 
@@ -23,10 +25,6 @@ class FieldErrorData:
     #   through the resolver tree is designed.
     # TODO Make this contain useful fields, regardless of whether they are used in the "official" error reporting output
     message: str
-
-
-class CancelledExecutionError(Exception):
-    """Generic error raised when GraphQL execution is cancelled before all response data was determined."""
 
 
 class ErrorHandler(ABC):
