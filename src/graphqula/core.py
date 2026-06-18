@@ -137,23 +137,34 @@ class Schema:
         Raises:
             Any unhandled errors during field evaluation.
         """
+        # Executing a request will automatically freeze the schema, in order to
+        # guarantee consistency of execution
         if not self.is_frozen:
+            LOGGER.debug("Implicitly freezing schema at time of first execution.")
             self.freeze()
 
+        # Build internal data structures for handling a request, if they don't exist yet.
+        # TODO will prob end up compling the gql-core schem aobject, and this check will fall out as part of that.
         if not self._root_queries:
+            # TODO need a test for this
             raise ValueError("A schema must define at least one query field.")
 
+        # Ensure an error handler is configured
         if error_handler is None:
-            # TODO log choice of default, perhaps
+            # Production-ready GraphQL requests all go through a well-defined binding
+            # which explicitly passes a proper error tracker. OTOH code that directly
+            # calls `execute()` without setting an error handler is internal or unit
+            # test code, so it's reasonable to default to a fail-fast error handler
+            # that enables straightforward developer experience for those use cases.
+            LOGGER.info("Defaulting to use a fast-fail error handler.")
             error_handler = FailFastErrorHandler()
-        # TODO log what the error handler is, perhaps
+
+        LOGGER.debug("Handling errors with %s", error_handler)
         error_handler.bind_to_request()
 
-        # TODO note that unhandled exceptions may be propagated too. Or should we catch them all here?
-        # TODO build the engine. Resolver errors get wrapped into FieldError (with
-        #   path, once tracking lands) and handed to collector.collect(); parse and
-        #   validation errors raise unconditionally, before the collector is consulted.
-        return None
+        # TODO note that unhandled exceptions may be propagated out of this function
+        # TODO actually execute the query :-)
+        return None  # FIXME
 
     def _register_root_field(
         self, field_registry: dict[str, DeferredField], func: DeferredField
