@@ -112,6 +112,9 @@ class FailFastErrorHandler(BaseErrorHandler):
     error was not an exception.
     """
 
+    def __str__(self) -> str:
+        return "fail-fast error strategy"
+
     def report_error(
         self, message: str, *, child_field: str | None = None
     ) -> FieldErrorData:
@@ -130,6 +133,9 @@ class ErrorTracker(BaseErrorHandler):
     """
 
     _errors: list[FieldErrorData] = field(default_factory=list)
+
+    def __str__(self) -> str:
+        return "error-recording strategy"
 
     def get_errors(self) -> Sequence[FieldErrorData]:
         """Read-only view of all errors encountered so far, in the order they occurred in."""
@@ -169,6 +175,9 @@ class BoundedErrorTracker(ErrorTracker):
     def __post_init__(self) -> None:
         if self.max_errors < 1:
             raise ValueError("Error limit must be non-zero")
+
+    def __str__(self) -> str:
+        return f"bounded error-recording strategy (max {self.max_errors})"
 
     def _check_error_count(self):
         if len(self._errors) > self.max_errors:
