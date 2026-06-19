@@ -6,6 +6,7 @@ import inspect
 import logging
 from collections.abc import Awaitable, Callable
 from typing import Any
+from graphql import GraphQLSchema
 
 from .error_handler import FastFailErrorHandler, BaseErrorHandler
 
@@ -27,6 +28,9 @@ class Schema:
     used (for execution or otherwise) then the schema is frozen and cannot be modified.
     """
 
+    #: The `graphql-core` AST for the schema, created lazily on demand.
+    _ast: GraphQLSchema | None
+
     _frozen: bool
 
     #: Mapping of schema_name -> handler for all mutation fields at the root level.
@@ -39,6 +43,7 @@ class Schema:
     _root_queries: dict[str, DeferredField]
 
     def __init__(self) -> None:
+        self._ast = None
         self._frozen = False
         self._root_queries = {}
         self._root_mutations = {}
@@ -109,6 +114,17 @@ class Schema:
             target.update(source)
         return self
 
+    async def initialise(self):
+        """Ensure once-off initialisation has all been completed."""
+        # Freeze the schema, before we build internal structures
+        if not self.is_frozen:
+            LOGGER.debug("Implicitly freezing schema at initialisation time")
+            self.freeze()
+
+        # Create internal AST representation
+        if self._ast is None:
+            self._ast = await self._build_ast()
+
     async def execute(
         self,
         document: str,
@@ -129,17 +145,8 @@ class Schema:
         Raises:
             Any unhandled errors during field evaluation.
         """
-        # Executing a request will automatically freeze the schema, in order to
-        # guarantee consistency of execution
-        if not self.is_frozen:
-            LOGGER.debug("Implicitly freezing schema at time of first execution.")
-            self.freeze()
-
-        # Build internal data structures for handling a request, if they don't exist yet.
-        # TODO will prob end up compling the gql-core schem aobject, and this check will fall out as part of that.
-        if not self._root_queries:
-            # TODO need a test for this
-            raise ValueError("A schema must define at least one query field.")
+        # Executing a request will automatically freeze the schema and build internal structures
+        await self.initialise()
 
         # Ensure an error handler is configured
         if error_handler is None:
@@ -157,6 +164,19 @@ class Schema:
         # TODO note that unhandled exceptions may be propagated out of this function
         # TODO actually execute the query :-)
         return None  # FIXME
+
+    async def _build_ast(self) -> GraphQLSchema:
+        """Build an AST representation of the root fields in this schema."""
+        # TODO dont like this structure. can we do property access or soemthign
+
+        # TODO needs sto be frozen
+
+        # TODO will prob end up compling the gql-core schema object, and this check will fall out as part of that.
+        if not self._root_queries:
+            # TODO need a test for this
+            raise ValueError("A schema must define at least one query field.")
+
+        raise NotImplementedError("_build_ast")
 
     def _register_root_field(
         self, field_registry: dict[str, DeferredField], func: DeferredField
