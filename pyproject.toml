@@ -10,6 +10,7 @@ authors = ["garyd <github@gazza.id.au>"]
 license = "LGPL"
 
 [tool.poetry.dependencies]
+graphql-core = "^3.2"
 # When you change this, also update:
 #   - `tool.pyrefly.python-version` in this file
 python = "^3.10"
