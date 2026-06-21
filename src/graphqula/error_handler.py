@@ -104,7 +104,7 @@ class BaseErrorHandler(ErrorHandler, ABC):
         self.is_bound = True
 
 
-class FailFastErrorHandler(BaseErrorHandler):
+class FastFailErrorHandler(BaseErrorHandler):
     """Error handling strategy that cancels execution when any error is reported,
     by raising an exception.
 

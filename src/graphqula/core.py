@@ -7,7 +7,7 @@ import logging
 from collections.abc import Awaitable, Callable
 from typing import Any
 
-from .error_handler import FailFastErrorHandler, BaseErrorHandler
+from .error_handler import FastFailErrorHandler, BaseErrorHandler
 
 LOGGER = logging.getLogger(__name__)
 
@@ -157,7 +157,7 @@ class Schema:
             # test code, so it's reasonable to default to a fail-fast error handler
             # that enables straightforward developer experience for those use cases.
             LOGGER.info("Defaulting to use a fast-fail error handler.")
-            error_handler = FailFastErrorHandler()
+            error_handler = FastFailErrorHandler()
 
         LOGGER.debug("Handling errors with %s", error_handler)
         error_handler.bind_to_request()
