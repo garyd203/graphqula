@@ -1,11 +1,11 @@
 import pytest
 
-from graphqula.error_handler import FailFastErrorHandler, CancelledExecutionError
+from graphqula.error_handler import FastFailErrorHandler, CancelledExecutionError
 
 
 def test_report_error_should_raise_custom_error():
     # Setup
-    handler = FailFastErrorHandler()
+    handler = FastFailErrorHandler()
 
     # Exercise / Verify
     with pytest.raises(CancelledExecutionError, match="boom"):
@@ -14,7 +14,7 @@ def test_report_error_should_raise_custom_error():
 
 def test_report_exception_should_re_raise_original_exception_when_it_has_no_stack_trace():
     # Setup
-    handler = FailFastErrorHandler()
+    handler = FastFailErrorHandler()
     original = ValueError("original failure")
 
     # Exercise / Verify
@@ -26,7 +26,7 @@ def test_report_exception_should_re_raise_original_exception_when_it_has_no_stac
 
 def test_report_exception_should_re_raise_original_exception_when_inside_exception_handler():
     # Setup
-    handler = FailFastErrorHandler()
+    handler = FastFailErrorHandler()
     original = ValueError("original failure")
 
     def fail_badly():
@@ -55,7 +55,7 @@ def test_report_exception_should_re_raise_original_exception_when_inside_excepti
 
 def test_report_exception_should_re_raise_original_exception_when_caught_and_reported_outside_exception_handler():
     # Setup
-    handler = FailFastErrorHandler()
+    handler = FastFailErrorHandler()
     original = ValueError("original failure")
 
     def fail_badly():
