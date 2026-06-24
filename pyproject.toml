@@ -17,7 +17,7 @@ ruff = "^0.15"
 fastapi = "^0.115"
 
 [tool.poetry.group.test.dependencies]
-pytest = "^8"
+pytest = "^9"
 pytest-asyncio = "^1.4.0"
 
 [tool.pytest.ini_options]
