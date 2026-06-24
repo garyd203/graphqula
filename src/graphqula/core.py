@@ -48,12 +48,12 @@ class Schema:
 
     _frozen: bool
 
-    #: Mapping of name -> handler for all mutation fields at the root level.
+    #: Mapping of schema_name -> handler for all mutation fields at the root level.
     #: Note that mutations must always be at the root level, and must always be a deferred field
     #: (not a simple field).
     _root_mutations: dict[str, DeferredField]
 
-    #: Mapping of name -> handler for all query fields at the root level.
+    #: Mapping of schema_name -> handler for all query fields at the root level.
     #: Note that root level fields must always be a deferred field (not a simple field).
     _root_queries: dict[str, DeferredField]
 
