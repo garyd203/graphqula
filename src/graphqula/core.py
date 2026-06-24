@@ -98,7 +98,7 @@ class Schema:
         May be called directly or used as a decorator.
 
         By convention, fields that modify data are registered as mutations rather than queries
-        (similar to the distinction between GET and POST/PATCH in RESTful API's). Stated
+        (similar to the distinction between GET vs POST/PATCH in RESTful API's). Stated
         more precisely, a single GraphQL request that requests multiple top-level mutation fields
         will process each field sequentially, whereas query fields are processed in parallel.
         """
