@@ -26,7 +26,7 @@ These are load-bearing — they should win arguments about how to implement thin
 - **Visitor pattern, not a 2-in-1 hierarchy.** Schema/response models are a standalone class hierarchy. The tree-walking logic that turns them into a JSON response lives separately and must not pollute the models.
 - **Async-only resolvers.** Sync resolution is intentionally unsupported (threadpool + context propagation is a mess).
 - **Don't reinvent wheels** for non-core concerns (caching, dataloader, DI mechanics) when a good option exists.
-- **Use only one constrained class library**, which is `pydantic` (not `dataclasses`)
+- **Use dataclasses internally, and pydantic for interface types.** This means our internal code isn't directly coupled to the version of pydantic that the library user has chosen.
 - **Immutable objects** are easier to work with, and should be preferred - especially for long-lived objects.
 
 
