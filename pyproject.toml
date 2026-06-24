@@ -14,7 +14,7 @@ black = "=26.5.1"
 ruff = "~0.15"
 
 [tool.poetry.group.bindings.dependencies]
-fastapi = "~0.115"
+fastapi = "~0.138"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^9"
