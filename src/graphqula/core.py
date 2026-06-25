@@ -6,7 +6,13 @@ import inspect
 import logging
 from collections.abc import Callable
 from typing import Any
-from graphql import GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLField
+
+from graphql import GraphQLField, GraphQLObjectType, GraphQLSchema, GraphQLString
+from graphql import parse as parse_graphql
+from graphql import validate as validate_graphql
+
+from .ast_helpers import get_operation
+from .types import JSONDict
 
 from .error_handler import FastFailErrorHandler, BaseErrorHandler
 from .exceptions import SchemaFrozenError
@@ -141,7 +147,7 @@ class Schema:
         error_handler: BaseErrorHandler | None = None,
         operation_name: str | None = None,
         variables: dict[str, Any] | None = None,
-    ) -> dict[str, Any] | None:
+    ) -> JSONDict:
         """Execute a GraphQL operation against this schema, returning just the result data.
 
         Any errors during field evaluation will be reported to `error_handler`.
@@ -169,9 +175,28 @@ class Schema:
         LOGGER.debug("Handling errors with %s", error_handler)
         error_handler.bind_to_request()
 
-        # TODO note that unhandled exceptions may be propagated out of this function
-        # TODO actually execute the query :-)
-        return None  # FIXME
+        # Parse and validate the document
+        # FIXME not async - use threadpool and async to_thread or equivalent
+        # TODO handle errors
+        # TODO set max_tokens for safety
+        query_ast = parse_graphql(document)
+
+        # FIXME not async
+        # TODO handle errors
+        # TODO set max_errors
+        # TODO do we need to set rules
+        # TODO do we need to set type_info
+        assert self._ast is not None, "Created when the schema was frozen"
+        _validation_errors = validate_graphql(self._ast, query_ast)
+
+        _operation = await get_operation(query_ast, operation_name, variables or {})
+
+        # Generate response data for the selected operation
+        # TODO choose self._queries or self._mutations based on op kind
+        # assert self._queries is not None, "Created when the schema was frozen"
+        # response = await evaluate_operation(operation, self._queries, error_handler)
+        # return response
+        return {}
 
     async def _build_ast(self) -> GraphQLSchema:
         """Build an AST representation of the root fields in this schema."""
