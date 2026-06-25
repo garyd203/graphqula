@@ -175,9 +175,17 @@ class Schema:
 
     async def _build_ast(self) -> GraphQLSchema:
         """Build an AST representation of the root fields in this schema."""
-        # TODO dont like this structure. can we do property access or soemthign
+        # TODO tests
+        if not self.is_frozen:
+            raise Exception("Schema should be frozen before trying to build an AST.")
 
-        # TODO needs sto be frozen
+        # FIXME build a fake schema
+        ast = GraphQLSchema(
+            query=GraphQLObjectType(
+                "Query", fields={"hero": GraphQLField(GraphQLString)}
+            )
+        )
+        return ast
 
         # TODO will prob end up compling the gql-core schema object, and this check will fall out as part of that.
         if not self._root_queries:
