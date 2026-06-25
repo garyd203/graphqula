@@ -12,15 +12,20 @@ from .error_handler import FastFailErrorHandler, BaseErrorHandler
 
 LOGGER = logging.getLogger(__name__)
 
+# TODO needs tests for almost everything
 
 #: Type for an async function that calculates the value for a deferred field
+# TODO move into types module?
 DeferredField = Callable[..., Awaitable[Any]]
 
 
 class SchemaFrozenError(Exception):
     """Raised when we try to modify a frozen schema."""
 
+    # TODO move into exceptions module?
 
+
+# TODO dataclass it
 class Schema:
     """A GraphQL schema representing query + mutation root fields with rich nested response types.
 
@@ -31,15 +36,18 @@ class Schema:
     #: The `graphql-core` AST for the schema, created lazily on demand.
     _ast: GraphQLSchema | None
 
+    # TODO needs doc
     _frozen: bool
 
     #: Mapping of schema_name -> handler for all mutation fields at the root level.
     #: Note that mutations must always be at the root level, and must always be a deferred field
     #: (not a simple field).
+    # todo call these raw
     _root_mutations: dict[str, DeferredField]
 
     #: Mapping of schema_name -> handler for all query fields at the root level.
     #: Note that root level fields must always be a deferred field (not a simple field).
+    # todo call these raw
     _root_queries: dict[str, DeferredField]
 
     def __init__(self) -> None:
@@ -53,6 +61,9 @@ class Schema:
         if self._frozen:
             LOGGER.warning("Freezing an already-frozen schema.")
 
+        # TODO this should actually fully process the linked field to pull out types and other
+        #   internal structure, then store that ratehr than the raw functon. Then (maybe) update
+        #   include_schema as well to use the internal structure.
         # TODO build the type registry here (walk resolver return types) so the
         #   type graph can be validated and emitted as SDL. Deferred until
         #   type-name resolution lands.
@@ -101,6 +112,7 @@ class Schema:
         Additionally, the other schema is frozen (if it isn't already) so that the user can't inadvertently register
         more fields in the other schema and believe they are also in this schema.
         """
+        # TODO include isnt quite the right word - implies a dynamic linking, rather than an import or merge
         if self.is_frozen:
             raise SchemaFrozenError("Cannot modify a frozen schema.")
         other.freeze()
@@ -121,9 +133,13 @@ class Schema:
             LOGGER.debug("Implicitly freezing schema at initialisation time")
             self.freeze()
 
+        # TODO Create internal schema representation using our own (actually useful) data structures
+
         # Create internal AST representation
         if self._ast is None:
             self._ast = await self._build_ast()
+
+        # TODO need to validate the schema - see `graphql.validate_schema`
 
     async def execute(
         self,
