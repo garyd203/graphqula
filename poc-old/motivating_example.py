@@ -56,6 +56,4 @@ class Mutation(BaseModel):
     pass  # FIXME
 
 
-schema = make_schema(
-    query=Query,
-)
+schema = make_schema(query=Query)

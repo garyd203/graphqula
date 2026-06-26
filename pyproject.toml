@@ -1,3 +1,7 @@
+[tool.black]
+line-length = 88
+skip-magic-trailing-comma = true
+
 [tool.poetry]
 name = "graphqula"
 version = "0.1.0"
