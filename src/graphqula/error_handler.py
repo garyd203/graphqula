@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
+from typing_extensions import override
 from typing import Sequence
 
 from .exceptions import CancelledExecutionError
@@ -115,11 +116,13 @@ class FastFailErrorHandler(BaseErrorHandler):
     def __str__(self) -> str:
         return "fail-fast error strategy"
 
+    @override
     def report_error(
         self, message: str, *, child_field: str | None = None
     ) -> FieldErrorData:
         raise CancelledExecutionError(message)
 
+    @override
     def report_exception(
         self, ex: Exception, *, child_field: str | None = None
     ) -> FieldErrorData:
@@ -143,6 +146,7 @@ class ErrorTracker(BaseErrorHandler):
         # Use tuple so that it's obviously a read-only sequence.
         return tuple(self._errors)
 
+    @override
     def report_error(
         self, message: str, *, child_field: str | None = None
     ) -> FieldErrorData:
@@ -151,6 +155,7 @@ class ErrorTracker(BaseErrorHandler):
         LOGGER.warning("Handled error evaluating field: %s", message)
         return self._track_error(message)
 
+    @override
     def report_exception(
         self, ex: Exception, *, child_field: str | None = None
     ) -> FieldErrorData:
@@ -176,6 +181,7 @@ class BoundedErrorTracker(ErrorTracker):
         if self.max_errors < 1:
             raise ValueError("Error limit must be non-zero")
 
+    @override
     def __str__(self) -> str:
         return f"bounded error-recording strategy (max {self.max_errors})"
 
@@ -189,6 +195,7 @@ class BoundedErrorTracker(ErrorTracker):
             )
             raise CancelledExecutionError(failure_message)
 
+    @override
     def report_error(
         self, message: str, *, child_field: str | None = None
     ) -> FieldErrorData:
@@ -196,6 +203,7 @@ class BoundedErrorTracker(ErrorTracker):
         self._check_error_count()
         return data
 
+    @override
     def report_exception(
         self, ex: Exception, *, child_field: str | None = None
     ) -> FieldErrorData:
