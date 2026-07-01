@@ -10,11 +10,14 @@ authors = ["garyd <github@gazza.id.au>"]
 license = "LGPL"
 
 [tool.poetry.dependencies]
+# When you change this, also update:
+#   - `tool.pyrefly.python-version` in this file
 python = "^3.10"
 pydantic = "^2"
 
 [tool.poetry.group.dev-tools.dependencies]
 black = "=26.5.1"
+pyrefly = "^1"
 ruff = "~0.15"
 
 [tool.poetry.group.bindings.dependencies]
@@ -23,6 +26,31 @@ fastapi = "~0.138"
 [tool.poetry.group.test.dependencies]
 pytest = "^9"
 pytest-asyncio = "^1.4"
+
+[tool.pyrefly]
+# Strict everywhere by default.
+preset = "strict"
+project-includes = [
+    "src/**/*.py*",
+    "tests/**/*.py*",
+]
+
+# Keep this in sync with `tool.poetry.dependencies.python`.
+python-version = "3.10"
+
+[tool.pyrefly.errors]
+# We don't enforce typing, so implicit Any's are acceptable.
+implicit-any-parameter = "ignore"
+
+[[tool.pyrefly.sub-config]]
+# Test code has a more relaxed expectation for type checking - most of the time it adds
+# noise and hassle without improving quality or readability.
+matches = "tests/**"
+
+[tool.pyrefly.sub-config.errors]
+# NB: The error configuration for `tests` here is merged onto the root config
+
+missing-override-decorator = "ignore"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
