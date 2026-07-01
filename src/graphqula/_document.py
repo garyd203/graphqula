@@ -12,9 +12,9 @@ independent representation that is easy to work with when executing the request.
 from __future__ import annotations
 
 import enum
-from collections.abc import Iterator, Mapping
+from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import Any, Optional
+from typing import Any, Optional, Sequence
 
 
 class OperationKind(enum.Enum):
@@ -87,6 +87,14 @@ class FieldGroup:
 
     #: Ordered list of fields to be evaluated
     # TODO at some point this needs to be a dictionary by response subclass. Note that it will still need to be sorted by order of declaration
+    # TODO it'd be good if this was immutable - a set
     fields: list[ResponseField]
 
-    # TODO construct a helper function that iterates through subclass-relevant fields.
+    def fields_for_type(self) -> Sequence[ResponseField]:
+        """Get all fields that need to be returned for this concrete response type.
+
+        The fields are sorted in the order they should be returned in the result.
+        """
+        # FIXME need a compulsory parameter for the actual schema subclass.
+        #   Nedd a way to deal with the secanrio when we don't have one
+        return self.fields
