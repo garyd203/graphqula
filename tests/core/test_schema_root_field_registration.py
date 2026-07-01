@@ -94,7 +94,7 @@ def test_register_query_should_reject_sync_function():
 
     # Exercise / Verify
     with pytest.raises(TypeError, match="must be an async"):
-        schema.register_query(not_async)
+        schema.register_query(not_async)  # type: ignore
 
 
 def test_register_mutation_should_reject_sync_function():
@@ -106,7 +106,7 @@ def test_register_mutation_should_reject_sync_function():
 
     # Exercise / Verify
     with pytest.raises(TypeError, match="must be an async"):
-        schema.register_mutation(not_async)
+        schema.register_mutation(not_async)  # type: ignore
 
 
 def test_register_query_should_reject_duplicate_field():
@@ -119,7 +119,7 @@ def test_register_query_should_reject_duplicate_field():
 
     # Exercise / Verify
     with pytest.raises(ValueError, match=r"(?i)duplicate.*hero"):
-        schema.register_query(hero)
+        schema.register_query(hero)  # type: ignore
 
 
 def test_register_mutation_should_reject_duplicate_field():
@@ -132,7 +132,7 @@ def test_register_mutation_should_reject_duplicate_field():
 
     # Exercise / Verify
     with pytest.raises(ValueError, match=r"(?i)duplicate.*update_hero"):
-        schema.register_mutation(update_hero)
+        schema.register_mutation(update_hero)  # type: ignore
 
 
 def test_schema_should_allow_same_name_across_kinds():
