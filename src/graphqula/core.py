@@ -21,18 +21,10 @@ class SchemaFrozenError(Exception):
 
 
 class Schema:
-    """A GraphQL schema: a registry of top-level resolvers tagged by operation.
+    """A GraphQL schema representing query + mutation root fields with rich nested response types.
 
-    A schema is *open* while you register entry points — via the ``query`` and
-    ``mutation`` decorators, or by folding another schema in with
-    ``include_schema``. The first execution freezes it; any later registration
-    then raises. A frozen schema is immutable and safe to share as a long-lived
-    object.
-
-    Query and mutation share a namespace only within their own kind: ``query``
-    and ``mutation`` may each define a field called ``foo``, but two queries
-    called ``foo`` collide. The kind is part of a field's identity, which is why
-    the two roots are stored separately rather than in one flat map.
+    The schema is mutable whilst root fields are being registered. Once it is first
+    used (for execution or otherwise) then the schema is frozen and cannot be modified.
     """
 
     _frozen: bool
@@ -72,7 +64,7 @@ class Schema:
     ) -> DeferredField | Callable[[DeferredField], DeferredField]:
         """Register the handler for a top-level "root" query field.
 
-        May be called directly or used as a decorator.
+        May be called directly or used as a decorator. Returns the original function.
         """
         if func is None:
             # Decorator was called first before decorating the target
@@ -84,7 +76,7 @@ class Schema:
     ) -> DeferredField | Callable[[DeferredField], DeferredField]:
         """Register the handler for a top-level "root" mutation field.
 
-        May be called directly or used as a decorator.
+        May be called directly or used as a decorator. Returns the original function.
 
         By convention, fields that modify data are registered as mutations rather than queries
         (similar to the distinction between GET vs POST/PATCH in RESTful API's). Stated
