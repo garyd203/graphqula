@@ -1,8 +1,10 @@
 """General-purpose shared types."""
 
+from __future__ import annotations
+
 from enum import Enum
 
-from typing import TypeAlias, Union
+from typing import TypeAlias, Union, Callable, Awaitable, Any
 
 #: Type of any raw non-structured value that is passed over-the-wire in a GraphQL
 #: document, variable or response. This is any of the built-in scalars + any enum.
@@ -20,3 +22,6 @@ JSONValue: TypeAlias = JSONPrimitive | None | list["JSONValue"] | dict[str, "JSO
 #: We intentionally don't include None (this should be a specific type declaration if
 #: it is intended), or lists (since we don't use/support top-level JSON lists).
 JSONDict: TypeAlias = dict[str, JSONValue]
+
+#: Type for a function that calculates the value for a deferred field
+DeferredField = Callable[..., Awaitable[Any]]

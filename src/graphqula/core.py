@@ -4,25 +4,17 @@ from __future__ import annotations
 
 import inspect
 import logging
-from collections.abc import Awaitable, Callable
+from collections.abc import Callable
 from typing import Any
 from graphql import GraphQLSchema
 
 from .error_handler import FastFailErrorHandler, BaseErrorHandler
+from .exceptions import SchemaFrozenError
+from .types import DeferredField
 
 LOGGER = logging.getLogger(__name__)
 
 # TODO needs tests for almost everything
-
-#: Type for an async function that calculates the value for a deferred field
-# TODO move into types module?
-DeferredField = Callable[..., Awaitable[Any]]
-
-
-class SchemaFrozenError(Exception):
-    """Raised when we try to modify a frozen schema."""
-
-    # TODO move into exceptions module?
 
 
 # TODO dataclass it

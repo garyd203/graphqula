@@ -1,6 +1,7 @@
 import pytest
 
-from graphqula.core import Schema, SchemaFrozenError
+from graphqula.core import Schema
+from graphqula.exceptions import SchemaFrozenError
 
 
 def test_register_query_direct_call_should_register_function():
