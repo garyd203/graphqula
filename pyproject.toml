@@ -38,18 +38,27 @@ project-includes = [
 # Keep this in sync with `tool.poetry.dependencies.python`.
 python-version = "3.10"
 
-[tool.pyrefly.errors]
+[[tool.pyrefly.sub-config]]
+# Internal modules (NB: not `__init__.py`!) are not intended to be accessed by library
+# users, so it does not need to be well typed. It is up to the code author to add
+# enough type hints for their purposes, but often we can just rely on type inference.
+matches = "src/graphqula/**/_[!_]*.py*"
+
+[tool.pyrefly.sub-config.errors]
+# NB: The error configuration for `tests` here is merged onto the root config
+
 # We don't enforce typing, so implicit Any's are acceptable.
 implicit-any-parameter = "ignore"
 
 [[tool.pyrefly.sub-config]]
-# Test code has a more relaxed expectation for type checking - most of the time it adds
-# noise and hassle without improving quality or readability.
+# Test code has an even more relaxed expectation for type checking - most of the time
+# it adds noise and hassle without improving quality or readability.
 matches = "tests/**"
 
 [tool.pyrefly.sub-config.errors]
 # NB: The error configuration for `tests` here is merged onto the root config
 
+implicit-any-parameter = "ignore"
 missing-override-decorator = "ignore"
 
 [tool.pytest.ini_options]
