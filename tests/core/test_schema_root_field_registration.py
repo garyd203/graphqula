@@ -167,19 +167,6 @@ async def test_execute_should_freeze_the_schema():
     assert schema.is_frozen
 
 
-async def test_execute_should_require_at_least_one_root_query_field():
-    # Setup
-    empty_schema = Schema()
-
-    # Exercise & Verify
-    # FIXME #21: Should raise an error
-    # with pytest.raises(ValueError, match="at least one query field"):
-    await empty_schema.execute("{ hero }")
-
-    # Verify
-    assert empty_schema.is_frozen, "Should have been frozen before executing"
-
-
 def test_include_schema_should_copy_fields():
     # Setup sub schema
     sub_schema = Schema()
