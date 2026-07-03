@@ -32,7 +32,15 @@ class Schema:
     #: Whether this schema has been frozen, and hence may not be modified.
     _frozen: bool
 
-    #: Mapping of schema_name -> handler for all mutation fields at the root level.
+    #: Metadata for all root level mutations, keyed by the field's schema name.
+    #: This is valid once the schema is frozen.
+    _mutations: dict[str, DeferredFieldData] | None
+
+    #: Metadata for all root level queries, keyed by the field's schema name.
+    #: This is valid once the schema is frozen.
+    _queries: dict[str, DeferredFieldData] | None
+
+    #: Mapping of {schema_name: handler_function} for all mutation fields at the root level.
     #: Note that mutations must always be at the root level, and must always be a deferred field
     #: (not a simple field).
     # todo call these raw
@@ -46,6 +54,8 @@ class Schema:
     def __init__(self) -> None:
         self._ast = None
         self._frozen = False
+        self._mutations = None
+        self._queries = None
         self._root_queries = {}
         self._root_mutations = {}
 
@@ -72,6 +82,7 @@ class Schema:
         # TODO build the type registry here (walk resolver return types) so the
         #   type graph can be validated and emitted as SDL. Deferred until
         #   type-name resolution lands.
+        self._build_metadata()
 
         # Create internal AST representation
         self._build_ast()
@@ -218,6 +229,20 @@ class Schema:
         """Construct internal metadata objects for this schema."""
         if not self.is_frozen:
             raise Exception("Schema should be frozen before trying to build metadata.")
+
+        mutations = {}
+        queries = {}
+
+        # TODO actually populate the mappings
+
+        # FIXME build a fake schema
+        async def _fake_get_hero() -> str:
+            return "R2-D2"
+
+        queries["hero"] = DeferredFieldData(evaluator=_fake_get_hero, result_type=str)
+
+        self._mutations = mutations
+        self._queries = queries
 
     def _register_root_field(
         self, field_registry: dict[str, DeferredField], func: DeferredField
