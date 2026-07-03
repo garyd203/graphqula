@@ -27,23 +27,24 @@ LOGGER = logging.getLogger(__name__)
 class Schema:
     """A GraphQL schema representing query + mutation root fields with rich nested response types.
 
-    The schema is mutable whilst root fields are being registered. Once it is first
+    The schema is modifiable whilst root fields are being registered. Once it is first
     used (for execution or otherwise) then the schema is frozen and cannot be modified.
     """
 
     #: The `graphql-core` AST for the schema, created lazily on demand.
+    #: This is valid once the schema is frozen.
     _ast: GraphQLSchema | None
 
-    # TODO needs doc
+    #: Whether this schema has been frozen, and hence may not be modified.
     _frozen: bool
 
-    #: Mapping of schema_name -> handler for all mutation fields at the root level.
+    #: Mapping of {schema_name: handler_function} for all mutation fields at the root level.
     #: Note that mutations must always be at the root level, and must always be a deferred field
     #: (not a simple field).
     # todo call these raw
     _root_mutations: dict[str, DeferredField]
 
-    #: Mapping of schema_name -> handler for all query fields at the root level.
+    #: Mapping of {schema_name: handler_function} for all query fields at the root level.
     #: Note that root level fields must always be a deferred field (not a simple field).
     # todo call these raw
     _root_queries: dict[str, DeferredField]
@@ -55,18 +56,31 @@ class Schema:
         self._root_mutations = {}
 
     def freeze(self):
-        """Explicitly freeze the schema, which will block registering any more fields."""
+        """Explicitly freeze the schema, which will prevent any more fields from being registered.
+
+        Internal data structures are then constructed.
+
+        NB: This function needs to be non-async so it can be easily called by
+        module-level code as users build up a schema.
+        """
         if self._frozen:
             LOGGER.warning("Freezing an already-frozen schema.")
 
-        # TODO this should actually fully process the linked field to pull out types and other
-        #   internal structure, then store that ratehr than the raw functon. Then (maybe) update
-        #   include_schema as well to use the internal structure.
-        # TODO build the type registry here (walk resolver return types) so the
-        #   type graph can be validated and emitted as SDL. Deferred until
-        #   type-name resolution lands.
-
+        # TODO it'd be good to have a proper lock around this. we want to avoid data
+        #   structures being updated concurrently whilst we're creating them
+        #   -> coudl jsut say it's not threadsafe? But need to deal with it being called by parallel calls to execute
         self._frozen = True
+
+        # TODO Create internal schema representation using our own (actually useful) data structures
+        # TODO this should actually fully process the linked field to pull out types and other
+        #   internal structure, then store that rather than the raw functon. Then (maybe) update
+        #   include_schema as well to use the internal structure.
+        # TODO build the type registry here so the whole type graph can be validated
+
+        # Create internal AST representation
+        self._build_ast()
+
+        # TODO need to validate the AST - see `graphql.validate_schema`
 
     @property
     def is_frozen(self) -> bool:
@@ -124,21 +138,6 @@ class Schema:
             target.update(source)
         return self
 
-    async def initialise(self):
-        """Ensure once-off initialisation has all been completed."""
-        # Freeze the schema, before we build internal structures
-        if not self.is_frozen:
-            LOGGER.debug("Implicitly freezing schema at initialisation time")
-            self.freeze()
-
-        # TODO Create internal schema representation using our own (actually useful) data structures
-
-        # Create internal AST representation
-        if self._ast is None:
-            self._ast = await self._build_ast()
-
-        # TODO need to validate the schema - see `graphql.validate_schema`
-
     async def execute(
         self,
         document: str,
@@ -160,7 +159,10 @@ class Schema:
             Any unhandled errors during field evaluation.
         """
         # Executing a request will automatically freeze the schema and build internal structures
-        await self.initialise()
+        if not self.is_frozen:
+            LOGGER.debug("Implicitly freezing schema at execution time")
+            # TODO avoid blocking the async loop - wrap in an async call
+            self.freeze()
 
         # Ensure an error handler is configured
         if error_handler is None:
@@ -198,9 +200,8 @@ class Schema:
         # return response
         return {}
 
-    async def _build_ast(self) -> GraphQLSchema:
-        """Build an AST representation of the root fields in this schema."""
-        # TODO tests
+    def _build_ast(self) -> None:
+        """Build an AST representation of this schema."""
         if not self.is_frozen:
             raise Exception("Schema should be frozen before trying to build an AST.")
 
@@ -210,14 +211,13 @@ class Schema:
                 "Query", fields={"hero": GraphQLField(GraphQLString)}
             )
         )
-        return ast
 
-        # TODO will prob end up compling the gql-core schema object, and this check will fall out as part of that.
-        if not self._root_queries:
-            # TODO need a test for this
-            raise ValueError("A schema must define at least one query field.")
+        self._ast = ast
 
-        raise NotImplementedError("_build_ast")
+    def _build_metadata(self):
+        """Construct internal metadata objects for this schema."""
+        if not self.is_frozen:
+            raise Exception("Schema should be frozen before trying to build metadata.")
 
     def _register_root_field(
         self, field_registry: dict[str, DeferredField], func: DeferredField
