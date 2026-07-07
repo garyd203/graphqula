@@ -242,7 +242,9 @@ class Schema:
         async def _fake_get_hero() -> str:
             return "R2-D2"
 
-        queries["hero"] = DeferredFieldData(evaluator=_fake_get_hero, result_type=str)
+        queries["hero"] = DeferredFieldData(
+            evaluator=_fake_get_hero, result_type_sdl=str
+        )
 
         self._mutations = mutations
         self._queries = queries
