@@ -15,7 +15,7 @@ from .ast_helpers import get_operation
 from .error_handler import BaseErrorHandler, FastFailErrorHandler
 from ._evaluation import evaluate_operation
 from .types import JSONDict
-from ._structure.schema import DeferredFieldData
+from ._structures.schema import DeferredFieldData
 from .exceptions import SchemaFrozenError
 from .types import DeferredField
 
