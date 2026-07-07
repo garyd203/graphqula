@@ -16,7 +16,7 @@ def test_register_query_direct_call_should_register_function():
 
     # Verify
     assert returned is hero
-    assert schema._root_queries["hero"] is hero
+    assert schema._raw_queries["hero"] is hero
 
 
 def test_register_mutation_direct_call_should_register_function():
@@ -31,7 +31,7 @@ def test_register_mutation_direct_call_should_register_function():
 
     # Verify
     assert returned is update_hero
-    assert schema._root_mutations["update_hero"] is update_hero
+    assert schema._raw_mutations["update_hero"] is update_hero
 
 
 def test_register_query_decorator_should_register_function_when_not_called():
@@ -44,7 +44,7 @@ def test_register_query_decorator_should_register_function_when_not_called():
         return "R2-D2"
 
     # Verify
-    assert schema._root_queries["hero"] is hero
+    assert schema._raw_queries["hero"] is hero
 
 
 def test_register_mutation_decorator_should_register_function_when_not_called():
@@ -57,7 +57,7 @@ def test_register_mutation_decorator_should_register_function_when_not_called():
         return "R2-D2"
 
     # Verify
-    assert schema._root_mutations["update_hero"] is update_hero
+    assert schema._raw_mutations["update_hero"] is update_hero
 
 
 def test_register_query_decorator_should_register_function_when_called():
@@ -70,7 +70,7 @@ def test_register_query_decorator_should_register_function_when_called():
         return "R2-D2"
 
     # Verify
-    assert schema._root_queries["hero"] is hero
+    assert schema._raw_queries["hero"] is hero
 
 
 def test_register_mutation_decorator_should_register_function_when_called():
@@ -83,7 +83,7 @@ def test_register_mutation_decorator_should_register_function_when_called():
         return "R2-D2"
 
     # Verify
-    assert schema._root_mutations["update_hero"] is update_hero
+    assert schema._raw_mutations["update_hero"] is update_hero
 
 
 def test_register_query_should_reject_sync_function():
@@ -148,8 +148,8 @@ def test_schema_should_allow_same_name_across_kinds():
     schema.register_mutation(hero)
 
     # Verify
-    assert schema._root_queries["hero"] is hero
-    assert schema._root_mutations["hero"] is hero
+    assert schema._raw_queries["hero"] is hero
+    assert schema._raw_mutations["hero"] is hero
 
 
 async def test_execute_should_freeze_the_schema():
@@ -190,9 +190,9 @@ def test_include_schema_should_copy_fields():
     include_result = root_schema.include_schema(sub_schema)
 
     # Verify
-    assert "hero" in root_schema._root_queries
-    assert "update_hero" in root_schema._root_mutations
-    assert "ping" in root_schema._root_queries
+    assert "hero" in root_schema._raw_queries
+    assert "update_hero" in root_schema._raw_mutations
+    assert "ping" in root_schema._raw_queries
 
     assert include_result is root_schema, "Should return same schema for call-chaining"
     assert (
@@ -260,8 +260,8 @@ def test_include_schema_should_allow_sub_schemas_to_be_included_twice():
     root_schema2.include_schema(sub_schema)
 
     # Verify
-    assert "hero" in root_schema1._root_queries
-    assert "hero" in root_schema2._root_queries
+    assert "hero" in root_schema1._raw_queries
+    assert "hero" in root_schema2._raw_queries
 
 
 def test_include_schema_should_accept_sub_schema_with_only_mutations():
@@ -279,7 +279,7 @@ def test_include_schema_should_accept_sub_schema_with_only_mutations():
     root_schema.include_schema(sub_schema)
 
     # Verify
-    assert "update_hero" in root_schema._root_mutations
+    assert "update_hero" in root_schema._raw_mutations
 
 
 def test_new_schema_should_not_be_frozen():
@@ -318,8 +318,8 @@ def test_freeze_should_preserve_registered_fields():
     schema.freeze()
 
     # Verify
-    assert schema._root_mutations["update_hero"] is update_hero
-    assert schema._root_queries["hero"] is hero
+    assert schema._raw_mutations["update_hero"] is update_hero
+    assert schema._raw_queries["hero"] is hero
 
 
 def test_freeze_empty_schema_is_okay():
@@ -372,5 +372,5 @@ def test_frozen_schema_should_prevent_farther_schema_changes():
         schema.register_mutation(update_villain)
 
     # Verify
-    assert schema._root_mutations == {}
-    assert schema._root_queries == {}
+    assert schema._raw_mutations == {}
+    assert schema._raw_queries == {}

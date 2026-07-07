@@ -54,21 +54,19 @@ class Schema:
     #: Mapping of {schema_name: handler_function} for all mutation fields at the root level.
     #: Note that mutations must always be at the root level, and must always be a deferred field
     #: (not a simple field).
-    # todo call these raw
-    _root_mutations: dict[str, DeferredField]
+    _raw_mutations: dict[str, DeferredField]
 
     #: Mapping of {schema_name: handler_function} for all query fields at the root level.
     #: Note that root level fields must always be a deferred field (not a simple field).
-    # todo call these raw
-    _root_queries: dict[str, DeferredField]
+    _raw_queries: dict[str, DeferredField]
 
     def __init__(self) -> None:
         self._ast = None
         self._frozen = False
         self._mutations = None
         self._queries = None
-        self._root_queries = {}
-        self._root_mutations = {}
+        self._raw_queries = {}
+        self._raw_mutations = {}
 
     def freeze(self):
         """Explicitly freeze the schema, which will prevent any more fields from being registered.
@@ -112,8 +110,8 @@ class Schema:
         """
         if func is None:
             # Decorator was called first before decorating the target
-            return lambda f: self._register_root_field(self._root_queries, f)
-        return self._register_root_field(self._root_queries, func)
+            return lambda f: self._register_root_field(self._raw_queries, f)
+        return self._register_root_field(self._raw_queries, func)
 
     def register_mutation(
         self, func: DeferredField | None = None
@@ -129,8 +127,8 @@ class Schema:
         """
         if func is None:
             # Decorator was called first before decorating the target
-            return lambda f: self._register_root_field(self._root_mutations, f)
-        return self._register_root_field(self._root_mutations, func)
+            return lambda f: self._register_root_field(self._raw_mutations, f)
+        return self._register_root_field(self._raw_mutations, func)
 
     def include_schema(self, other: Schema) -> Schema:
         """Merge all the schema data from the other schema into this schema.
@@ -146,8 +144,8 @@ class Schema:
         other.freeze()
 
         for target, source in (
-            (self._root_queries, other._root_queries),
-            (self._root_mutations, other._root_mutations),
+            (self._raw_queries, other._raw_queries),
+            (self._raw_mutations, other._raw_mutations),
         ):
             if shared_keys := target.keys() & source.keys():
                 raise ValueError(f"Merge will create duplicate fields {shared_keys}.")
