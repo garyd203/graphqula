@@ -1,4 +1,4 @@
-"""Tools for working with the Schema and Document AST's from `graphql-core` library."""
+"""Tools for working with the Schema and Document AST's from the `graphql-core` library."""
 
 from typing import Any, Optional
 
@@ -6,8 +6,11 @@ from graphql import DocumentNode
 
 from ._structures.document import Operation, OperationKind, FieldGroup, ResponseField
 
+# TODO needs tests for everything
+# TODO rename to be private
 
-# TODO gte a standard union type for var values mebbe. is it worth it?
+
+# TODO get a standard union type for var values based on recursive dict of RawLeafType
 # TODO rename mebbe?
 async def get_operation(
     query_ast: DocumentNode, operation_name: Optional[str], variables: dict[str, Any]
