@@ -10,13 +10,12 @@ from typing import Any
 from graphql import GraphQLField, GraphQLObjectType, GraphQLSchema, GraphQLString
 from graphql import parse as parse_graphql
 from graphql import validate as validate_graphql
-from ._evaluation import evaluate_operation
-from ._structure.schema import DeferredFieldData
 
 from .ast_helpers import get_operation
+from .error_handler import BaseErrorHandler, FastFailErrorHandler
+from ._evaluation import evaluate_operation
 from .types import JSONDict
-
-from .error_handler import FastFailErrorHandler, BaseErrorHandler
+from ._structure.schema import DeferredFieldData
 from .exceptions import SchemaFrozenError
 from .types import DeferredField
 
