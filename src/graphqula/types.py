@@ -6,6 +6,7 @@ from enum import Enum
 
 from typing import TypeAlias, Union, Callable, Awaitable, Any
 
+# TODO I think this should not be used for a response, since that is always JSON
 #: Type of any raw non-structured value that is passed over-the-wire in a GraphQL
 #: document, variable or response. This is any of the built-in scalars + any enum.
 #: Note that this represents data that has not been converted to any custom scalar
