@@ -39,6 +39,15 @@ project-includes = [
 # Keep this in sync with `tool.poetry.dependencies.python`.
 python-version = "3.10"
 
+replace-imports-with-any = [
+    # graphql-core's GraphQLNamedType.__new__ is annotated to return the base type, so
+    # every named-type value (constructors *and* module constants like GraphQLString)
+    # is inferred as GraphQLNamedType instead of its real subtype. So we have to treat
+    # the whole package as untyped.
+    "graphql",
+    "graphql.*",
+]
+
 [[tool.pyrefly.sub-config]]
 # Internal modules (NB: not `__init__.py`!) are not intended to be accessed by library
 # users, so it does not need to be well typed. It is up to the code author to add
