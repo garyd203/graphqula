@@ -181,8 +181,13 @@ class Schema:
 
         # FIXME build a fake schema
         ast = GraphQLSchema(
-            query=GraphQLObjectType(
-                "Query", fields={"hero": GraphQLField(GraphQLString)}
+            query=GraphQLObjectType(  # pyrefly: ignore[bad-argument-type]
+                "Query",
+                fields={
+                    "hero": GraphQLField(
+                        GraphQLString  # pyrefly: ignore[bad-argument-type]
+                    )
+                },
             )
         )
         return ast
