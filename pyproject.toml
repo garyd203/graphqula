@@ -7,7 +7,7 @@ name = "graphqula"
 version = "0.1.0"
 description = "Server-side GraphQL, purely Pythonic."
 authors = ["garyd <github@gazza.id.au>"]
-license = "LGPL"
+license = "LGPL-3.0-only"
 packages = [
     { include="graphqula", from="src" },
 ]
