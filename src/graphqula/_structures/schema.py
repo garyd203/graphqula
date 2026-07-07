@@ -12,6 +12,9 @@ from typing import Any
 
 from ..types import DeferredField
 
+# TODO I think we want these to be full classes, no poiint trying to make it abstract and poiintlessly decoupled.
+#   probably means evaluation will end up in here
+
 
 @dataclass(frozen=True)
 class DeferredFieldData:
@@ -21,8 +24,8 @@ class DeferredFieldData:
     evaluator: DeferredField
 
     #: Type of the value returned
-    # TODO determine if this is a python type, or a schema type -> schema type i think
-    # TODO can probably do a better job of the Any type
+    # TODO determine if this is a python type, or a schema type, or a json type -> schema type i think
+    # TODO regardless, can probably do a better job of the Any type
     result_type: Any
 
     # TODO dependencies
