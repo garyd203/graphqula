@@ -1,7 +1,7 @@
 """Tools to evaluate field values from their document and matching schema specification."""
 
 from .error_handler import ErrorHandler
-from ._structure.schema import DeferredFieldData
+from ._structures.schema import DeferredFieldData
 from ._document import Operation, ResponseField
 from .types import JSONDict, JSONValue
 
