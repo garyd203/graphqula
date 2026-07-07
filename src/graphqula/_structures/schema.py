@@ -8,9 +8,9 @@ and use it for executing requests.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
 
 from ..types import DeferredField
+from ..types import RawLeafType
 
 # TODO I think we want these to be full classes, no poiint trying to make it abstract and poiintlessly decoupled.
 #   probably means evaluation will end up in here
@@ -23,10 +23,12 @@ class DeferredFieldData:
     #: Function used to evaluate the value for the field
     evaluator: DeferredField
 
-    #: Type of the value returned
-    # TODO determine if this is a python type, or a schema type, or a json type -> schema type i think
-    # TODO regardless, can probably do a better job of the Any type
-    result_type: Any
+    #: Type of the value returned, expressed as the SDL (GraphQL Schema) type
+    # TODO RawLeafType is entirely the wrong type
+    # TODO that descritpiin is still wrong - iyt;s nto the actual SDL type, it's the python type that maps to the SDL type
+    # TODO also note about it being the most abstract definition of that type
+    result_type_sdl: type[RawLeafType]
 
+    # TODO result_type_json
     # TODO dependencies
     # TODO params
