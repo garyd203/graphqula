@@ -233,7 +233,8 @@ class Schema:
         mutations = {}
         queries = {}
 
-        # TODO actually populate the mappings
+        # TODO actually populate the mappings. NB: This is derived from the raw mappings, not from the AST schema
+        # TODO use the beastie to write tests and build this up
 
         # FIXME build a fake schema
         async def _fake_get_hero() -> str:
