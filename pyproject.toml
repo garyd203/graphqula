@@ -8,11 +8,15 @@ version = "0.1.0"
 description = "Server-side GraphQL, purely Pythonic."
 authors = ["garyd <github@gazza.id.au>"]
 license = "LGPL"
+packages = [
+    { include="graphqula", from="src" },
+]
 
 [tool.poetry.dependencies]
 graphql-core = "^3.2"
 # When you change this, also update:
 #   - `tool.pyrefly.python-version` in this file
+#   - `setup-python` steps in GitHub actions workflows
 python = "^3.10"
 pydantic = "^2"
 
@@ -49,10 +53,11 @@ replace-imports-with-any = [
 ]
 
 [[tool.pyrefly.sub-config]]
-# Internal modules (NB: not `__init__.py`!) are not intended to be accessed by library
-# users, so it does not need to be well typed. It is up to the code author to add
-# enough type hints for their purposes, but often we can just rely on type inference.
-matches = "src/graphqula/**/_[!_]*.py*"
+# Internal modules and packages (single leading underscore, so not `__init__.py`) are
+# not intended to be accessed by library users, so they don't need to be well typed.
+# It is up to the code author to add enough type hints for their purposes, but often
+# we can just rely on type inference.
+matches = "src/graphqula/**/_[!_]*"
 
 [tool.pyrefly.sub-config.errors]
 # NB: The error configuration for `tests` here is merged onto the root config
