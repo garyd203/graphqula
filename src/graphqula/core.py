@@ -10,6 +10,7 @@ from typing import Any
 from graphql import GraphQLField, GraphQLObjectType, GraphQLSchema, GraphQLString
 from graphql import parse as parse_graphql
 from graphql import validate as validate_graphql
+from ._evaluation import evaluate_operation
 from ._structure.schema import DeferredFieldData
 
 from .ast_helpers import get_operation
@@ -203,14 +204,13 @@ class Schema:
         assert self._ast is not None, "Created when the schema was frozen"
         _validation_errors = validate_graphql(self._ast, query_ast)
 
-        _operation = await get_operation(query_ast, operation_name, variables or {})
+        operation = await get_operation(query_ast, operation_name, variables or {})
 
         # Generate response data for the selected operation
         # TODO choose self._queries or self._mutations based on op kind
-        # assert self._queries is not None, "Created when the schema was frozen"
-        # response = await evaluate_operation(operation, self._queries, error_handler)
-        # return response
-        return {}
+        assert self._queries is not None, "Created when the schema was frozen"
+        response = await evaluate_operation(operation, self._queries, error_handler)
+        return response
 
     def _build_ast(self) -> None:
         """Build an AST representation of this schema."""
