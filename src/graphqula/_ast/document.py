@@ -1,10 +1,10 @@
-"""Tools for working with the Schema and Document AST's from the `graphql-core` library."""
+"""Tools for working with the Document AST from the `graphql-core` library."""
 
 from typing import Any, Optional
 
 from graphql import DocumentNode
 
-from ._structures.document import Operation, OperationKind, FieldGroup, ResponseField
+from .._structures.document import Operation, OperationKind, FieldGroup, ResponseField
 
 # TODO needs tests for everything
 # TODO rename to be private

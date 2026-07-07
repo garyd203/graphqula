@@ -11,7 +11,7 @@ from graphql import GraphQLField, GraphQLObjectType, GraphQLSchema, GraphQLStrin
 from graphql import parse as parse_graphql
 from graphql import validate as validate_graphql
 
-from ._ast_helpers import get_operation
+from ._ast.document import get_operation
 from .error_handler import BaseErrorHandler, FastFailErrorHandler
 from ._evaluation import evaluate_operation
 from .types import JSONDict
