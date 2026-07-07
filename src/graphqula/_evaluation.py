@@ -2,7 +2,7 @@
 
 from .error_handler import ErrorHandler
 from ._structures.schema import DeferredFieldData
-from ._document import Operation, ResponseField
+from ._structures.document import Operation, ResponseField
 from .types import JSONDict, JSONValue
 
 # TODO needs tests for everything

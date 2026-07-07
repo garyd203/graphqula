@@ -4,7 +4,7 @@ from typing import Any, Optional
 
 from graphql import DocumentNode
 
-from ._document import Operation, OperationKind, FieldGroup, ResponseField
+from ._structures.document import Operation, OperationKind, FieldGroup, ResponseField
 
 
 # TODO gte a standard union type for var values mebbe. is it worth it?
