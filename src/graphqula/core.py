@@ -28,7 +28,6 @@ LOGGER = logging.getLogger(__name__)
 # TODO needs tests for almost everything
 
 
-# TODO dataclass it
 class Schema:
     """A GraphQL schema representing query + mutation root fields with rich nested response types.
 
