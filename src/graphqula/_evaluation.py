@@ -1,9 +1,11 @@
 """Tools to evaluate field values from their document and matching schema specification."""
 
-from .error_handler import ErrorHandler
+from ._structures.document import Operation
+from ._structures.document import ResponseField
 from ._structures.schema import DeferredFieldData
-from ._structures.document import Operation, ResponseField
-from .types import JSONDict, JSONValue
+from .error_handler import ErrorHandler
+from .types import JSONDict
+from .types import JSONValue
 
 # TODO needs tests for everything
 

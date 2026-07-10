@@ -1,6 +1,7 @@
 import pytest
 
-from graphqula.error_handler import FastFailErrorHandler, CancelledExecutionError
+from graphqula.error_handler import CancelledExecutionError
+from graphqula.error_handler import FastFailErrorHandler
 
 
 def test_report_error_should_raise_custom_error():

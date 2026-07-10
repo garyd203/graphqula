@@ -14,7 +14,9 @@ from __future__ import annotations
 import enum
 from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import Any, Optional, Sequence
+from typing import Any
+from typing import Optional
+from typing import Sequence
 
 
 class OperationKind(enum.Enum):

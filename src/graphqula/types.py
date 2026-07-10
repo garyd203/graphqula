@@ -3,8 +3,11 @@
 from __future__ import annotations
 
 from enum import Enum
-
-from typing import TypeAlias, Union, Callable, Awaitable, Any
+from typing import Any
+from typing import Awaitable
+from typing import Callable
+from typing import TypeAlias
+from typing import Union
 
 # TODO I think this should not be used for a response, since that is always JSON
 #: Type of any raw non-structured value that is passed over-the-wire in a GraphQL

@@ -100,6 +100,20 @@ asyncio_mode = "auto"
 [tool.ruff]
 extend-exclude = ["poc-old"]
 
+[tool.ruff.lint]
+# TODO use straight select instead, so that we have a definitive list
+extend-select = [
+    # 'isort' import sorter
+    "I",
+]
+
+[tool.ruff.lint.isort]
+# One imported name per line, for cleaner change tracking
+force-single-line = true
+# Match black's config where we enable skip-magic-trailing-comma
+split-on-trailing-comma = false
+
+
 [build-system]
 requires = ["poetry-core>=2.4.0"]
 build-backend = "poetry.core.masonry.api"
