@@ -1,6 +1,7 @@
 import pytest
 
-from graphqula.error_handler import BaseErrorHandler, FieldErrorData
+from graphqula.error_handler import BaseErrorHandler
+from graphqula.error_handler import FieldErrorData
 
 
 class _StubErrorHandler(BaseErrorHandler):

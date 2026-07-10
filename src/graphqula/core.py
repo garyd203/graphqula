@@ -7,17 +7,21 @@ import logging
 from collections.abc import Callable
 from typing import Any
 
-from graphql import GraphQLField, GraphQLObjectType, GraphQLSchema, GraphQLString
+from graphql import GraphQLField
+from graphql import GraphQLObjectType
+from graphql import GraphQLSchema
+from graphql import GraphQLString
 from graphql import parse as parse_graphql
 from graphql import validate as validate_graphql
 
 from ._ast.document import get_operation
-from .error_handler import BaseErrorHandler, FastFailErrorHandler
 from ._evaluation import evaluate_operation
-from .types import JSONDict
 from ._structures.schema import DeferredFieldData
+from .error_handler import BaseErrorHandler
+from .error_handler import FastFailErrorHandler
 from .exceptions import SchemaFrozenError
 from .types import DeferredField
+from .types import JSONDict
 
 LOGGER = logging.getLogger(__name__)
 

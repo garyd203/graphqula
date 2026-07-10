@@ -2,7 +2,8 @@ import logging
 
 import pytest
 
-from graphqula.error_handler import BoundedErrorTracker, CancelledExecutionError
+from graphqula.error_handler import BoundedErrorTracker
+from graphqula.error_handler import CancelledExecutionError
 
 
 def test_should_reject_zero_error_limit_in_configuration():
