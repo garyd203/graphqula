@@ -39,7 +39,7 @@ python = "^3.10"
 pydantic = "^2"
 
 [tool.poetry.group.dev-tools.dependencies]
-black = "=26.5.1"
+black = "=26.10.1"
 pyrefly = "^1"
 ruff = "~0.15"
 
